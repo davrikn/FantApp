@@ -1,4 +1,4 @@
-package com.davidrk.fantapp
+package com.example.fantapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

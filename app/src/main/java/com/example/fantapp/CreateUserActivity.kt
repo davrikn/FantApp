@@ -1,4 +1,4 @@
-package com.davidrk.fantapp
+package com.example.fantapp
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +11,10 @@ class CreateUserActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.create_user)
 
-
+        val createUserButton = findViewById<Button>(R.id.createNewUserButton)
+        createUserButton.setOnClickListener {
+            val intent = Intent(this, FrontPageActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
