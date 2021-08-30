@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/newFirstNameText"
+        android:id="@+id/cuNewFirstNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
@@ -16,12 +16,12 @@
         android:hint="Firstname"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/newLastnameText"
+        app:layout_constraintBottom_toTopOf="@+id/cuNewLastnameText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/newLastnameText"
+        android:id="@+id/cuNewLastnameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
@@ -31,12 +31,12 @@
         android:hint="Lastname"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/newStreetAddressText"
+        app:layout_constraintBottom_toTopOf="@+id/cuNewStreetAddressText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/newStreetAddressText"
+        android:id="@+id/cuNewStreetAddressText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
@@ -46,12 +46,12 @@
         android:hint="Street address"
         android:inputType="text"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/newCityText"
+        app:layout_constraintBottom_toTopOf="@+id/cuNewCityText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/newCityText"
+        android:id="@+id/cuNewCityText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
@@ -61,12 +61,12 @@
         android:hint="City"
         android:inputType="text"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/newPostalcodeText"
+        app:layout_constraintBottom_toTopOf="@+id/cuNewPostalcodeText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/newPostalcodeText"
+        android:id="@+id/cuNewPostalcodeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
@@ -76,12 +76,12 @@
         android:hint="Postal code"
         android:inputType="textPostalAddress"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/newEmailText"
+        app:layout_constraintBottom_toTopOf="@+id/cuNewEmailText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/newUsernameText"
+        android:id="@+id/cuNewUsernameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
@@ -91,12 +91,12 @@
         android:hint="Username"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/newPasswordText"
+        app:layout_constraintBottom_toTopOf="@+id/cuNewPasswordText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/newPasswordText"
+        android:id="@+id/cuNewPasswordText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
@@ -106,12 +106,12 @@
         android:hint="Password"
         android:inputType="textPassword"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/createUserButton"
+        app:layout_constraintBottom_toTopOf="@+id/cuCreateUserButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/newEmailText"
+        android:id="@+id/cuNewEmailText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
@@ -121,12 +121,12 @@
         android:hint="Email address"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/newUsernameText"
+        app:layout_constraintBottom_toTopOf="@+id/cuNewUsernameText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/createUserButton"
+        android:id="@+id/cuCreateUserButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="138dp"
