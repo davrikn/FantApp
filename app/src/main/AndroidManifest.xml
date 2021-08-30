@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FantApp">
         <activity
-            android:name="com.example.fantapp.LoginActivity"
+            android:name="com.example.fantapp.FrontPageActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,7 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.fantapp.FrontPageActivity"></activity>
+        <activity android:name="com.example.fantapp.LoginActivity"></activity>
         <activity android:name="com.example.fantapp.CreateUserActivity"></activity>
     </application>
 
