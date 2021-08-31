@@ -18,8 +18,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.fantapp.LoginActivity"></activity>
-        <activity android:name="com.example.fantapp.CreateUserActivity"></activity>
+        <activity
+            android:name="com.example.fantapp.LoginActivity">
+            ></activity>
+        <activity
+            android:name="com.example.fantapp.CreateUserActivity">
+            ></activity>
     </application>
 
 </manifest>
