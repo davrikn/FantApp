@@ -1,4 +1,4 @@
-package com.example.fantapp
+package com.example.fantapp.activity
 
 import android.app.Activity
 import android.content.Intent
@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import com.example.fantapp.model.DataTypes
+import com.example.fantapp.R
 
 class LoginActivity : AppCompatActivity() {
 
@@ -22,7 +24,6 @@ class LoginActivity : AppCompatActivity() {
         val newUserButton = findViewById<Button>(R.id.loCreateNewUserButton)
         newUserButton.setOnClickListener{
             val intent = Intent(this, CreateUserActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
             startActivityForResult(intent, CREATE_USER)
         }
 
@@ -41,7 +42,21 @@ class LoginActivity : AppCompatActivity() {
 
         when (requestCode) {
             CREATE_USER -> {
-                setResult(resultCode, data)
+                val result = Intent()
+                data?.extras?.keySet()?.forEach( fun(key: String) {
+                    val value: String? = data?.extras?.get(key) as String?
+                    result?.putExtra(key, value)
+                })
+                setResult(resultCode, result)
+                println("Login from create user")
+                println(data)
+                println("Data uname:")
+                println(data?.extras?.get(DataTypes.USERNAME))
+                println("Result uname:")
+                println(result?.extras?.get(DataTypes.USERNAME))
+                result.extras?.keySet()?.forEach(fun(key: String) {
+                    println("key: " + key + " value: " + result?.extras?.get(key))
+                })
                 finish()
             }
         }

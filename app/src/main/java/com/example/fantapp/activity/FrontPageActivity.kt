@@ -1,10 +1,12 @@
-package com.example.fantapp
+package com.example.fantapp.activity
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.fantapp.model.DataTypes
+import com.example.fantapp.R
 
 class FrontPageActivity: AppCompatActivity() {
     private val LOGIN_ACTION: Int = 1
@@ -27,7 +29,8 @@ class FrontPageActivity: AppCompatActivity() {
             LOGIN_ACTION -> {
                 when (resultCode) {
                     Activity.RESULT_OK -> {
-                        val username = data?.extras?.get("username").toString()
+                        println("Login successful")
+                        val username = data?.extras?.get(DataTypes.USERNAME).toString()
                         if (username != null) {
                             userlabel?.text = username
                         }
