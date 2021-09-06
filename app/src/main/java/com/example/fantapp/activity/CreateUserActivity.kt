@@ -14,6 +14,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.fantapp.model.DataTypes
 import com.example.fantapp.R
+import com.example.fantapp.model.User
 import org.json.JSONObject
 
 class CreateUserActivity : AppCompatActivity() {
@@ -82,6 +83,11 @@ class CreateUserActivity : AppCompatActivity() {
                 println("response")
                 result.putExtra("response", response)
                 result.putExtra(DataTypes.USERNAME, usernameText?.text?.toString())
+                val user = User.getInstance()
+                user.setPassword(passwordText?.text?.toString())
+                user.setUsername(usernameText?.text?.toString())
+                user.setToken(response.toString())
+
 
                 setResult(Activity.RESULT_OK, result)
                 //goto browse
