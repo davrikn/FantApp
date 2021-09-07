@@ -24,7 +24,6 @@ class CreateUserActivity : AppCompatActivity() {
     private var queue: RequestQueue? = null
     private val url: String = "http://10.0.2.2:8080/api/"
     private var errors: ArrayList<String> = ArrayList<String>()
-    private var result: Intent = Intent()
     private var debug: TextView? = null
 
 
@@ -80,16 +79,13 @@ class CreateUserActivity : AppCompatActivity() {
             Request.Method.GET, url + "auth/login?uid=" + uid + "&pwd=" + pwd,
             { response ->
                 //set token of global user object
-                println("response")
-                result.putExtra("response", response)
-                result.putExtra(DataTypes.USERNAME, usernameText?.text?.toString())
+                println("response:")
+                println(response)
                 val user = User.getInstance()
                 user.setPassword(passwordText?.text?.toString())
                 user.setUsername(usernameText?.text?.toString())
                 user.setToken(response.toString())
 
-
-                setResult(Activity.RESULT_OK, result)
                 //goto browse
                 finish()
             },

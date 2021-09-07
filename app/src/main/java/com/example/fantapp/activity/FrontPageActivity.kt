@@ -11,7 +11,6 @@ import com.example.fantapp.UserObserver
 import com.example.fantapp.model.User
 
 class FrontPageActivity: AppCompatActivity(), UserObserver{
-    private val LOGIN_ACTION: Int = 1
     private var userlabel: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +24,7 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
             startActivity(intent)
         }
     }
-    
+
     override fun userUpdate() {
         super.userUpdate()
         userlabel?.text = User.getInstance().getUsername()
