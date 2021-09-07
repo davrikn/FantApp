@@ -21,10 +21,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.fantapp.activity.LoginActivity">
+            android:name="com.example.fantapp.activity.LoginActivity"
+            android:parentActivityName=".activity.FrontPageActivity">
             ></activity>
         <activity
-            android:name="com.example.fantapp.activity.CreateUserActivity">
+            android:name="com.example.fantapp.activity.CreateUserActivity"
+            android:parentActivityName=".activity.LoginActivity">
             ></activity>
     </application>
 
