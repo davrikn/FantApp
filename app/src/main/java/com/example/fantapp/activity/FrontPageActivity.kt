@@ -18,8 +18,11 @@ import org.json.JSONObject
 
 class FrontPageActivity: AppCompatActivity(), UserObserver{
     private var userlabel: TextView? = null
-    private var productURL: String = "http://host.docker.internal:8080/api/get"
+    private var apiURL = "http://10.0.2.2:8080/api/"
+    private var productURL: String = apiURL+"fant"
     private var products: ArrayList<Product> = ArrayList()
+    private var recyclerView: RecyclerView? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         products.add(Product("123", "Freaky stuff", null))
@@ -30,16 +33,18 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
         User.observe(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.front_page)
-        println("init")
-        //loadProducts()
-        val list: RecyclerView = findViewById(R.id.fpRecyclerView)
-        list.adapter = ProductAdapter(products)
-        list.layoutManager = LinearLayoutManager(this)
+        loadProducts()
+        recyclerView = findViewById(R.id.fpRecyclerView)
+        recyclerView?.adapter = ProductAdapter(products)
+        recyclerView?.layoutManager = LinearLayoutManager(this)
+        recyclerView?.setOnClickListener(fun(mordi) {
+        })
         userlabel = findViewById(R.id.fpUsernameText)
         userlabel?.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
+        userlabel?.bringToFront()
     }
 
     override fun userUpdate() {
@@ -47,25 +52,24 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
         userlabel?.text = User.getInstance().getUsername()
     }
 
-    /*
     fun loadProducts() {
         val queue = Volley.newRequestQueue(this)
-        println("Load prods")
         val request = JsonArrayRequest(Request.Method.GET, productURL, null, { response ->
-            println("BEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEANS")
             val n = response.length()
             for (i in 0 until n) {
                 var obj: JSONObject = response.getJSONObject(i)
                 var description: String = obj["description"].toString()
                 var price: String = obj["price"].toString()
-                val product = Product(price, description, null)
-
-                println(product)
+                val imageURL: String? = obj.getJSONArray("photos").getJSONObject(0)["subpath"].toString()
+                val product = Product(price, description, imageURL)
+                products.add(product)
+                recyclerView?.adapter?.notifyDataSetChanged()
             }
+
         }, {error ->
 
         } )
         queue.add(request)
     }
-    */
+
 }

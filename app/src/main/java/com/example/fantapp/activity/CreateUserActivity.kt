@@ -50,7 +50,6 @@ class CreateUserActivity : AppCompatActivity() {
             val request: StringRequest = object : StringRequest(
                 Method.POST, requrl,
                 Response.Listener { response ->
-                    println(response)
                     doLogin(usernameText?.text.toString(), passwordText?.text.toString())
                 },
                 Response.ErrorListener { error ->
@@ -79,8 +78,6 @@ class CreateUserActivity : AppCompatActivity() {
             Request.Method.GET, url + "auth/login?uid=" + uid + "&pwd=" + pwd,
             { response ->
                 //set token of global user object
-                println("response:")
-                println(response)
                 val user = User.getInstance()
                 user.setPassword(passwordText?.text?.toString())
                 user.setUsername(usernameText?.text?.toString())
@@ -90,7 +87,6 @@ class CreateUserActivity : AppCompatActivity() {
                 finish()
             },
             { error ->
-                println(error)
                 debug?.text = error.toString()
             }
         )

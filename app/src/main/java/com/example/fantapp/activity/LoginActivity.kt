@@ -43,7 +43,6 @@ class LoginActivity : AppCompatActivity() {
                     usernameText?.text?.toString() + "&" +
                     DataTypes.PASSWORD + "=" +
                     passwordText?.text?.toString()
-            println(requrl)
             val request = StringRequest(Request.Method.GET, requrl, { response ->
                 val user = User.getInstance()
                 user.setPassword(passwordText?.text?.toString())
