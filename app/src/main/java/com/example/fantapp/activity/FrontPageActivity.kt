@@ -14,6 +14,7 @@ import com.example.fantapp.R
 import com.example.fantapp.UserObserver
 import com.example.fantapp.model.Product
 import com.example.fantapp.model.User
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.json.JSONObject
 
 class FrontPageActivity: AppCompatActivity(), UserObserver{
@@ -22,6 +23,7 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
     private var productURL: String = apiURL+"fant"
     private var products: ArrayList<Product> = ArrayList()
     private var recyclerView: RecyclerView? = null
+    private var addItemButton: FloatingActionButton? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,14 +39,19 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
         recyclerView = findViewById(R.id.fpRecyclerView)
         recyclerView?.adapter = ProductAdapter(products)
         recyclerView?.layoutManager = LinearLayoutManager(this)
-        recyclerView?.setOnClickListener(fun(mordi) {
-        })
+
         userlabel = findViewById(R.id.fpUsernameText)
         userlabel?.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
         userlabel?.bringToFront()
+
+        addItemButton = findViewById(R.id.fpAddItemButton)
+        addItemButton?.setOnClickListener {
+            val intent = Intent(this, FrontPageActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun userUpdate() {
