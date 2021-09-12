@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.fantapp">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
     <application
 
         android:usesCleartextTraffic="true"
@@ -23,11 +25,14 @@
         <activity
             android:name="com.example.fantapp.activity.LoginActivity"
             android:parentActivityName=".activity.FrontPageActivity">
-            ></activity>
+            </activity>
         <activity
             android:name="com.example.fantapp.activity.CreateUserActivity"
             android:parentActivityName=".activity.LoginActivity">
             ></activity>
+        <activity android:name=".activity.AddItemActivity"
+            android:parentActivityName=".activity.FrontPageActivity">
+        </activity>
     </application>
 
 </manifest>

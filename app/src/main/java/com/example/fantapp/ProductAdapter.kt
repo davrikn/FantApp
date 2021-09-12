@@ -1,6 +1,5 @@
 package com.example.fantapp
 
-import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,11 +17,13 @@ class ProductAdapter( private val products: MutableList<Product>): RecyclerView.
         val descriptionText: TextView
         val priceText: TextView
         val image: ImageView
+        val titleText: TextView
 
         init {
-            descriptionText = view.findViewById(R.id.productDescription)
-            priceText = view.findViewById(R.id.priceText)
-            image = view.findViewById(R.id.productImage)
+            descriptionText = view.findViewById(R.id.ifProductDescription)
+            priceText = view.findViewById(R.id.ifPriceText)
+            image = view.findViewById(R.id.ifProductImage)
+            titleText = view.findViewById(R.id.ifProductTitle)
         }
     }
 
@@ -36,6 +37,7 @@ class ProductAdapter( private val products: MutableList<Product>): RecyclerView.
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.descriptionText.text = products[position].description
         holder.priceText.text = products[position].price
+        holder.titleText.text = products[position].title
         //holder.image.setImageBitmap(getImageBitmap(products[position].imageURL))
         setImageBitmap(products[position].imageURL, holder.image)
     }

@@ -27,15 +27,10 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        products.add(Product("123", "Freaky stuff", null))
-        products.add(Product("13123", "Breaky stuff", null))
-        products.add(Product("12323", "Sneaky stuff", null))
-        products.add(Product("3", "Keeky stuff", null))
 
         User.observe(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.front_page)
-        loadProducts()
         recyclerView = findViewById(R.id.fpRecyclerView)
         recyclerView?.adapter = ProductAdapter(products)
         recyclerView?.layoutManager = LinearLayoutManager(this)
@@ -49,7 +44,7 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
 
         addItemButton = findViewById(R.id.fpAddItemButton)
         addItemButton?.setOnClickListener {
-            val intent = Intent(this, FrontPageActivity::class.java)
+            val intent = Intent(this, AddItemActivity::class.java)
             startActivity(intent)
         }
     }
@@ -60,6 +55,11 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
     }
 
     fun loadProducts() {
+        products.clear()
+        products.add(Product("123", "Long description", "Wow what a product", null))
+        products.add(Product("13123", "Cool things", "Selling cool things", null))
+        products.add(Product("12323", "Nvidia rtx 3080, ryzen 7 5800h", "Selling pc", null))
+        products.add(Product("3", "Alrite", "Item for sale", null))
         val queue = Volley.newRequestQueue(this)
         val request = JsonArrayRequest(Request.Method.GET, productURL, null, { response ->
             val n = response.length()
@@ -68,7 +68,8 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
                 var description: String = obj["description"].toString()
                 var price: String = obj["price"].toString()
                 val imageURL: String? = obj.getJSONArray("photos").getJSONObject(0)["subpath"].toString()
-                val product = Product(price, description, imageURL)
+                val title: String = obj["price"].toString()
+                val product = Product(price, description, title, imageURL)
                 products.add(product)
                 recyclerView?.adapter?.notifyDataSetChanged()
             }
@@ -77,6 +78,11 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
 
         } )
         queue.add(request)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadProducts()
     }
 
 }
