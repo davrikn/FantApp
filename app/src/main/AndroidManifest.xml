@@ -24,15 +24,14 @@
         </activity>
         <activity
             android:name="com.example.fantapp.activity.LoginActivity"
-            android:parentActivityName=".activity.FrontPageActivity">
-            </activity>
+            android:parentActivityName=".activity.FrontPageActivity"/>
         <activity
             android:name="com.example.fantapp.activity.CreateUserActivity"
-            android:parentActivityName=".activity.LoginActivity">
-            ></activity>
+            android:parentActivityName=".activity.LoginActivity"/>
         <activity android:name=".activity.AddItemActivity"
-            android:parentActivityName=".activity.FrontPageActivity">
-        </activity>
+            android:parentActivityName=".activity.FrontPageActivity"/>
+        <activity android:name=".activity.ItemDetailActivity"
+            android:parentActivityName=".activity.FrontPageActivity"/>
     </application>
 
 </manifest>

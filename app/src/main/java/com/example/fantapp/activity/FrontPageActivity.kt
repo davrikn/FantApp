@@ -32,7 +32,13 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.front_page)
         recyclerView = findViewById(R.id.fpRecyclerView)
-        recyclerView?.adapter = ProductAdapter(products)
+        fun adapterOnClick(product: Product) {
+            val intent = Intent(this, ItemDetailActivity::class.java)
+            intent.putExtra("product", product)
+            this.startActivity(intent)
+        }
+
+        recyclerView?.adapter = ProductAdapter(products, this, {product: Product -> adapterOnClick(product) })
         recyclerView?.layoutManager = LinearLayoutManager(this)
 
         userlabel = findViewById(R.id.fpUsernameText)
@@ -56,10 +62,10 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
 
     fun loadProducts() {
         products.clear()
-        products.add(Product("123", "Long description", "Wow what a product", null))
-        products.add(Product("13123", "Cool things", "Selling cool things", null))
-        products.add(Product("12323", "Nvidia rtx 3080, ryzen 7 5800h", "Selling pc", null))
-        products.add(Product("3", "Alrite", "Item for sale", null))
+        products.add(Product(123123,"123", "Long description", "Wow what a product", ArrayList()))
+        products.add(Product(1111, "13123", "Cool things", "Selling cool things", ArrayList()))
+        products.add(Product(312312,"12323", "Nvidia rtx 3080, ryzen 7 5800h", "Selling pc", ArrayList()))
+        products.add(Product(8753455,"3", "Alrite", "Item for sale", ArrayList()))
         val queue = Volley.newRequestQueue(this)
         val request = JsonArrayRequest(Request.Method.GET, productURL, null, { response ->
             val n = response.length()
@@ -67,15 +73,21 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
                 var obj: JSONObject = response.getJSONObject(i)
                 var description: String = obj["description"].toString()
                 var price: String = obj["price"].toString()
-                val imageURL: String? = obj.getJSONArray("photos").getJSONObject(0)["subpath"].toString()
-                val title: String = obj["price"].toString()
-                val product = Product(price, description, title, imageURL)
+                val id: Int = obj["id"] as Int
+                val imageURLs: ArrayList<String> = ArrayList()
+                val photos = obj.getJSONArray("photos")
+                val n: Int = photos.length()
+                for (i in 0..n-1) {
+                    imageURLs.add(photos.getJSONObject(i)["subpath"].toString())
+                }
+                val title: String = obj["title"].toString()
+                val product = Product(id, price, description, title, imageURLs)
                 products.add(product)
                 recyclerView?.adapter?.notifyDataSetChanged()
             }
 
         }, {error ->
-
+            error.printStackTrace()
         } )
         queue.add(request)
     }

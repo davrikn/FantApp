@@ -50,7 +50,6 @@ class LoginActivity : AppCompatActivity() {
                 user.setToken(response.toString())
                 finish()
             }, { error ->
-
                 debugText?.text = error.toString()
             })
             queue.add(request)
