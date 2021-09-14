@@ -95,6 +95,13 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
     override fun onResume() {
         super.onResume()
         loadProducts()
+        if (!User.isLoggedIn()) {
+            userlabel?.text = "Login"
+            addItemButton?.hide()
+        } else {
+            userlabel?.text = User.getInstance().getUsername()
+            addItemButton?.show()
+        }
     }
 
 }

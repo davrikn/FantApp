@@ -48,6 +48,7 @@ class LoginActivity : AppCompatActivity() {
                 user.setPassword(passwordText?.text?.toString())
                 user.setUsername(usernameText?.text?.toString())
                 user.setToken(response.toString())
+                user.login()
                 finish()
             }, { error ->
                 debugText?.text = error.toString()

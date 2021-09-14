@@ -42,6 +42,9 @@ class ItemDetailActivity(): AppCompatActivity() {
         val priceText: TextView = findViewById(R.id.idPriceText)
         val buyButton: Button = findViewById(R.id.idBuyButton)
         val cancelButton: Button = findViewById(R.id.idCancelButton)
+        cancelButton.setOnClickListener {
+            finish()
+        }
 
         titleText.text = product.title
         descriptionText.text = product.description

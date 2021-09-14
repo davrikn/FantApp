@@ -82,6 +82,7 @@ class CreateUserActivity : AppCompatActivity() {
                 user.setPassword(passwordText?.text?.toString())
                 user.setUsername(usernameText?.text?.toString())
                 user.setToken(response.toString())
+                user.login()
 
                 //goto browse
                 finish()

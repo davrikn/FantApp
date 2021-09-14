@@ -7,6 +7,7 @@ class User private constructor() {
     private var token: String = ""
     private var username: String = ""
     private var password: String = ""
+    private var loggedIn: Boolean = false
 
     private fun notifyObservers() {
         observers.forEach( fun (observer){
@@ -28,7 +29,29 @@ class User private constructor() {
         fun observe(observer: UserObserver) {
             observers.add(observer)
         }
+
+        public fun logout() {user?.logout()}
+
+        public fun isLoggedIn(): Boolean {
+            if (user == null) {
+                return false
+            }
+            return user!!.loggedIn
+        }
     }
+
+    private fun clear() {
+        token = ""
+        password = ""
+        username = ""
+        loggedIn = false
+    }
+
+    public fun loggedIn(): Boolean {return loggedIn}
+
+    public fun logout() {this.clear()}
+
+    public fun login() {this.loggedIn = true}
 
     public fun setToken(token: String?) {
         if (token == null) return

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
+    <TextView
         android:id="@+id/idDescriptionText"
         android:layout_width="333dp"
         android:layout_height="128dp"
@@ -13,16 +13,21 @@
         android:layout_marginEnd="35dp"
         android:layout_marginBottom="20dp"
         android:ems="10"
+        android:focusable="false"
         android:gravity="start|top"
         android:hint="Item description"
-        android:inputType="textMultiLine"
+        android:inputType="none"
+        android:isScrollContainer="true"
+        android:scrollIndicators="right"
+        android:scrollbarStyle="insideInset"
         android:scrollbars="vertical"
         android:textAlignment="textStart"
+        android:verticalScrollbarPosition="right"
         app:layout_constraintBottom_toTopOf="@+id/idPriceText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
+    <TextView
         android:id="@+id/idPriceText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,14 +36,15 @@
         android:layout_marginBottom="20dp"
         android:ems="10"
         android:hint="Price"
-        android:inputType="number"
+        android:inputType="none"
         android:minHeight="48dp"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/idBuyButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:focusable="false"/>
 
-    <EditText
+    <TextView
         android:id="@+id/idTitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,12 +53,13 @@
         android:layout_marginEnd="100dp"
         android:ems="10"
         android:hint="Title"
-        android:inputType="textPersonName"
+        android:inputType="none"
         android:minHeight="48dp"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:focusable="false"/>
 
     <Button
         android:id="@+id/idBuyButton"
@@ -60,6 +67,7 @@
         android:layout_height="75dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="40dp"
+        android:editable="false"
         android:text="Buy"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -71,6 +79,7 @@
         android:layout_height="75dp"
         android:layout_marginStart="50dp"
         android:layout_marginBottom="40dp"
+        android:editable="false"
         android:text="Cancel"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -84,9 +93,11 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:contentDescription="Input feedback"
+        android:inputType="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:focusable="false"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/idViewPager"
