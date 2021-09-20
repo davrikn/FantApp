@@ -2,24 +2,28 @@ package com.example.fantapp.activity
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.media.Image
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEach
-import androidx.fragment.app.Fragment
-import com.android.volley.AuthFailureError
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.example.fantapp.R
 import com.example.fantapp.model.User
+import androidx.core.graphics.drawable.toBitmap
+import androidx.core.view.isVisible
+import com.example.fantapp.DebugObserver
+import com.example.fantapp.model.Product
+import java.io.BufferedReader
+import java.io.DataOutputStream
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
+import kotlin.random.Random
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import androidx.core.content.FileProvider
@@ -32,16 +36,105 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 
-class AddItemActivity: AppCompatActivity() {
+class AddItemActivity: AppCompatActivity(), DebugObserver {
     private val REQUEST_IMAGE_CAPTURE = 1
     private var addImageButton: Button? = null
     private var imageContainer: LinearLayout? = null
     private var apiURL = "http://10.0.2.2:8080/api/"
     private var addURL = apiURL + "fant/create"
+    private val boundary: String = "------WebKitFormBoundary6EWVXJwLnzkzGNaD"
+    private val retnew: String = "\r\n"
+    private val dretnew: String = retnew + retnew
+    private val contdis: String = "Content-Disposition: form-data; name=\""
+    private var debug: TextView? = null
+    private val debugText: DebugText = DebugText()
+    private val selected: ArrayList<View> = ArrayList()
+    private var removeSelectedButton: Button? = null
     val EXTRA_CONVERSATION = "com.example.fantapp.CONVERSATION"
     val FILEPROVIDER = "com.example.fantapp.fileprovider"
     var currentPhoto: File? = null
 
+    private class DebugText() {
+        private var busy = false;
+        private var text: String = ""
+        private val observers: ArrayList<DebugObserver> = ArrayList()
+        override fun toString(): String {
+            return text;
+        }
+
+        fun updateText(text: String) {
+            while (busy) {}
+            busy = true
+            this.text = text
+            notifyObservers()
+            busy = false
+        }
+
+        private fun notifyObservers() {
+            observers.forEach{
+                it.debugChange()
+            }
+        }
+    }
+
+    private class FuckYou(
+        private val data: String,
+        private val addURL: String,
+        private val debug: DebugText,
+        private val imageContainer: LinearLayout?
+    ): Thread() {
+
+        private fun doRequest(data: String): String {
+            val url = URL(addURL)
+            val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            connection.requestMethod = "POST"
+            connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=----WebKitFormBoundary6EWVXJwLnzkzGNaD")
+            connection.setRequestProperty("Content-Language", "en-US");
+            connection.setRequestProperty("Content-Length", data.encodeToByteArray().size.toString())
+            connection.setRequestProperty("User-Agent","Mozilla/5.0 ( compatible ) ");
+            connection.setRequestProperty("Accept","*/*");
+            connection.setRequestProperty("Authorization", "Bearer " + User.getInstance().getToken())
+            connection.useCaches = false;
+            connection.doInput = true;
+            connection.doOutput = true;
+            val wr = DataOutputStream(connection.outputStream)
+            wr.writeBytes(data)
+            wr.flush()
+            wr.close()
+            if (connection.responseCode == 200) {
+                val instream = connection.inputStream
+                val reader = BufferedReader(InputStreamReader(instream))
+                var line: String = ""
+                val response = StringBuffer()
+                while ((reader.readLine().also { line = it }) != null) {
+                    response.append("$line\r")
+                }
+                reader.close()
+                return response.toString()
+            }
+
+            println("============================================================================================================================================================================================================================")
+            println(connection.responseCode)
+            println(connection.responseMessage)
+            println(connection.errorStream)
+            return connection.responseCode.toString()
+
+        }
+
+        override fun run() {
+            uploadPics(imageContainer)
+            val response: String = doRequest(data)
+            debug.updateText(response)
+        }
+
+        private fun uploadPics(imageContainer: LinearLayout?) {
+
+        }
+    }
+
+    override fun debugChange() {
+        debug?.text = debugText.toString()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,14 +144,40 @@ class AddItemActivity: AppCompatActivity() {
         cancelButton.setOnClickListener {
             finish()
         }
+
         imageContainer = findViewById(R.id.aiImageLayout)
-        val debug: TextView = findViewById(R.id.aiDebug)
+        debug = findViewById(R.id.aiDebug)
         val productDescription: TextView = findViewById(R.id.aiDescriptionText)
         val productTitle: TextView = findViewById(R.id.aiTitleText)
         val priceText: TextView = findViewById(R.id.aiPriceText)
         addImageButton = findViewById(R.id.aiAddImageButton)
+        removeSelectedButton = findViewById(R.id.aiDeleteSelectedButton)
+        removeSelectedButton?.setOnClickListener {
+            selected.forEach {
+                imageContainer?.removeView(it)
+            }
+        }
+        //removeSelectedButton?.isVisible = false
         val addButton: Button = findViewById(R.id.aiAddButton)
         addButton.setOnClickListener {
+            var data: String = boundary + retnew + contdis + "title\"" + dretnew + productTitle.text.toString() + retnew +
+                    boundary + retnew + contdis + "description\"" + dretnew + productDescription.text.toString() + retnew +
+                    boundary + retnew + contdis + "price\"" + dretnew + priceText.text.toString() + retnew + boundary
+
+            /*
+                    boundary + retnew + contdis + "files\";"
+            imageContainer?.forEach {
+                it as ImageView
+                val fname = Random(69420).nextInt().toString()
+                data += "filename=\"" + fname + "\"" + retnew + "Content-Type: image/jpeg" + dretnew + it.drawable.toBitmap().toString() + retnew
+            }
+             */
+            data += "--" + retnew
+            //var data: String = "title:" + productTitle.text + retnew +"description:" + productDescription.text + retnew +"price:" + priceText.text
+
+            val t = FuckYou(data, addURL, debugText, imageContainer)
+            t.start()
+            /*
             val queue = Volley.newRequestQueue(this)
             val request: StringRequest = object : StringRequest(
                 Method.POST, addURL,
@@ -69,6 +188,7 @@ class AddItemActivity: AppCompatActivity() {
                     error.printStackTrace()
                     debug?.text = error.toString()
                 }) {
+
                 override fun getBodyContentType(): String {
                     return "multipart/form-data"
                 }
@@ -82,12 +202,14 @@ class AddItemActivity: AppCompatActivity() {
                 @Throws(AuthFailureError::class)
                 override fun getParams(): Map<String, String> {
                     val params: MutableMap<String, String> = HashMap()
-                    params["title"] = productTitle?.text.toString()
-                    params["description"] = productDescription?.text.toString()
-                    params["price"] = priceText.text.toString()
+                    params.put("title", productTitle?.text.toString())
+                    params.put("description", productDescription?.text.toString())
+                    params.put("price", priceText.text.toString())
                     val images = ArrayList<Bitmap>()
+                    print("imgs")
                     imageContainer?.forEach {
                         it as ImageView
+                        print(it.drawable.toString())
                         images.add((it.getDrawable() as BitmapDrawable).bitmap)
                     }
 
@@ -97,6 +219,7 @@ class AddItemActivity: AppCompatActivity() {
             queue.add(request)
 
             // TODO post product
+             */
         }
 
         addImageButton?.setOnClickListener {
@@ -139,6 +262,19 @@ class AddItemActivity: AppCompatActivity() {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             val image: ImageView = ImageView(this)
+            image.setOnLongClickListener {
+                /*
+                    Kunne enkelt endra visibility til removeSelected her men kotlin e fette retarda
+                */
+                if (selected.contains(it)) {
+                    selected.remove(it)
+                } else {
+                    selected.add(it)
+                }
+                removeSelectedButton?.isVisible = selected.size != 0
+
+                false
+            }
             image.setImageBitmap(imageBitmap)
             image.maxWidth = 100
             image.maxHeight = 100

@@ -29,7 +29,7 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
+        //TODO search functionality
         User.observe(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.front_page)
@@ -74,13 +74,14 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
         userlabel?.text = User.getInstance().getUsername()
     }
 
-    fun loadProducts() {
-        products.clear()/*
+    private fun loadProducts() {
+        products.clear()
+        /*
         products.add(Product(123123,"123", "Long description", "Wow what a product", ArrayList()))
         products.add(Product(1111, "13123", "Cool things", "Selling cool things", ArrayList()))
         products.add(Product(312312,"12323", "Nvidia rtx 3080, ryzen 7 5800h", "Selling pc", ArrayList()))
         products.add(Product(8753455,"3", "Alrite", "Item for sale", ArrayList()))
-        */
+         */
         val queue = Volley.newRequestQueue(this)
         val request = JsonArrayRequest(Request.Method.GET, productURL, null, { response ->
             val n = response.length()

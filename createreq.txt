@@ -1,0 +1,88 @@
+Frame 54303: 1260 bytes on wire (10080 bits), 1260 bytes captured (10080 bits) on interface \Device\NPF_Loopback, id 8
+Null/Loopback
+Internet Protocol Version 6, Src: ::1, Dst: ::1
+Transmission Control Protocol, Src Port: 62420, Dst Port: 8080, Seq: 50552, Ack: 1, Len: 1196
+[5 Reassembled TCP Segments (51747 bytes): #54295(1399), #54297(16384), #54299(16384), #54301(16384), #54303(1196)]
+Hypertext Transfer Protocol
+MIME Multipart Media Encapsulation, Type: multipart/form-data, Boundary: "----WebKitFormBoundaryxmdgcdVsgz47z0pB"
+    [Type: multipart/form-data]
+    First boundary: ------WebKitFormBoundaryxmdgcdVsgz47z0pB\r\n
+    Encapsulated multipart part: 
+        Content-Disposition: form-data; name="title"\r\n\r\n
+        Data (4 bytes)
+            Data: 64646464
+            [Length: 4]
+    Boundary: \r\n------WebKitFormBoundaryxmdgcdVsgz47z0pB\r\n
+    Encapsulated multipart part: 
+        Content-Disposition: form-data; name="description"\r\n\r\n
+        Data (7 bytes)
+            Data: 696d6774657374
+            [Length: 7]
+    Boundary: \r\n------WebKitFormBoundaryxmdgcdVsgz47z0pB\r\n
+    Encapsulated multipart part: 
+        Content-Disposition: form-data; name="price"\r\n\r\n
+        Data (3 bytes)
+            Data: 313233
+            [Length: 3]
+    Boundary: \r\n------WebKitFormBoundaryxmdgcdVsgz47z0pB\r\n
+    Encapsulated multipart part:  (image/png)
+        Content-Disposition: form-data; name="files"; filename="raiders5.png"\r\n
+        Content-Type: image/png\r\n\r\n
+        Portable Network Graphics
+            PNG Signature: 89504e470d0a1a0a
+            Image Header (IHDR)
+                Len: 13
+                Chunk: IHDR
+                ..0. .... .... .... .... .... .... .... = Ancillary: This is a CRITICAL chunk
+                .... .... ..0. .... .... .... .... .... = Private: This is a PUBLIC chunk
+                .... .... .... .... .... .... ..0. .... = Safe To Copy: This chunk is NOT safe to copy
+                Width: 302
+                Height: 170
+                Bit Depth: 8
+                Colour Type: Truecolour (2)
+                Compression Method: Deflate (0)
+                Filter Method: Adaptive (0)
+                Interlace Method: No interlace (0)
+                CRC: 0x9c74356e
+            Standard RGB colour space (sRGB)
+                Len: 1
+                Chunk: sRGB
+                ..1. .... .... .... .... .... .... .... = Ancillary: This is an ANCILLARY chunk
+                .... .... ..0. .... .... .... .... .... = Private: This is a PUBLIC chunk
+                .... .... .... .... .... .... ..0. .... = Safe To Copy: This chunk is NOT safe to copy
+                Intent: Perceptual (0)
+                CRC: 0xaece1ce9
+            Image gamma (gAMA)
+                Len: 4
+                Chunk: gAMA
+                ..1. .... .... .... .... .... .... .... = Ancillary: This is an ANCILLARY chunk
+                .... .... ..0. .... .... .... .... .... = Private: This is a PUBLIC chunk
+                .... .... .... .... .... .... ..0. .... = Safe To Copy: This chunk is NOT safe to copy
+                Gamma: 0,45455
+                CRC: 0x0bfc6105
+            Physical pixel dimensions (pHYs)
+                Len: 9
+                Chunk: pHYs
+                ..1. .... .... .... .... .... .... .... = Ancillary: This is an ANCILLARY chunk
+                .... .... ..0. .... .... .... .... .... = Private: This is a PUBLIC chunk
+                .... .... .... .... .... .... ..1. .... = Safe To Copy: This chunk is SAFE TO COPY
+                Horizontal pixels per unit: 3779
+                Vertical pixels per unit: 3779
+                Unit: Unit is METRE (1)
+                CRC: 0xc76fa864
+            Image data chunk (IDAT)
+                Len: 49759
+                Chunk: IDAT
+                ..0. .... .... .... .... .... .... .... = Ancillary: This is a CRITICAL chunk
+                .... .... ..0. .... .... .... .... .... = Private: This is a PUBLIC chunk
+                .... .... .... .... .... .... ..0. .... = Safe To Copy: This chunk is NOT safe to copy
+                Data
+                CRC: 0x943076f9
+            Image Trailer (IEND)
+                Len: 0
+                Chunk: IEND
+                ..0. .... .... .... .... .... .... .... = Ancillary: This is a CRITICAL chunk
+                .... .... ..0. .... .... .... .... .... = Private: This is a PUBLIC chunk
+                .... .... .... .... .... .... ..0. .... = Safe To Copy: This chunk is NOT safe to copy
+                CRC: 0xae426082
+    Last boundary: \r\n------WebKitFormBoundaryxmdgcdVsgz47z0pB--\r\n
