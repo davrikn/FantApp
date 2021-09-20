@@ -104,8 +104,9 @@ class AddItemActivity: AppCompatActivity(), DebugObserver {
             if (connection.responseCode == 200) {
                 val instream = connection.inputStream
                 val reader = BufferedReader(InputStreamReader(instream))
-                var line: String = ""
+                var line: String? = ""
                 val response = StringBuffer()
+                line = reader.readLine()
                 while ((reader.readLine().also { line = it }) != null) {
                     response.append("$line\r")
                 }
@@ -151,6 +152,10 @@ class AddItemActivity: AppCompatActivity(), DebugObserver {
         val productTitle: TextView = findViewById(R.id.aiTitleText)
         val priceText: TextView = findViewById(R.id.aiPriceText)
         addImageButton = findViewById(R.id.aiAddImageButton)
+        addImageButton?.setOnClickListener {
+            onCameraClick()
+            debugText.updateText("Clicked addImg")
+        }
         removeSelectedButton = findViewById(R.id.aiDeleteSelectedButton)
         removeSelectedButton?.setOnClickListener {
             selected.forEach {
@@ -222,11 +227,6 @@ class AddItemActivity: AppCompatActivity(), DebugObserver {
              */
         }
 
-        addImageButton?.setOnClickListener {
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
-        }
-
     }
 
     fun onCameraClick() {
@@ -263,9 +263,6 @@ class AddItemActivity: AppCompatActivity(), DebugObserver {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             val image: ImageView = ImageView(this)
             image.setOnLongClickListener {
-                /*
-                    Kunne enkelt endra visibility til removeSelected her men kotlin e fette retarda
-                */
                 if (selected.contains(it)) {
                     selected.remove(it)
                 } else {

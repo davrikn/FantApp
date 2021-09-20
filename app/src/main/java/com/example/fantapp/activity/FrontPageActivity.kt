@@ -2,6 +2,7 @@ package com.example.fantapp.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.SearchView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -23,10 +24,34 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
     private var apiURL = "http://10.0.2.2:8080/api/"
     private var productURL: String = apiURL+"fant"
     private var products: ArrayList<Product> = ArrayList()
+    private var displayProducts: DisplayProducts = DisplayProducts { recyclerView?.adapter?.notifyDataSetChanged() }
     private var recyclerView: RecyclerView? = null
     private var addItemButton: FloatingActionButton? = null
     private var logoutButton: TextView? = null
+    private var searchBar: SearchView? = null
 
+    private class DisplayProducts(val notifier : () -> Unit): ArrayList<Product>() {
+        override fun add(element: Product): Boolean {
+            val success: Boolean =  super.add(element)
+            if (success) {
+                notifier()
+            }
+            return success
+        }
+
+        override fun clear() {
+            super.clear()
+            notifier()
+        }
+
+        override fun remove(element: Product): Boolean {
+            val success: Boolean = super.remove(element)
+            if (success) {
+                notifier()
+            }
+            return success
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //TODO search functionality
@@ -40,7 +65,19 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
             this.startActivity(intent)
         }
 
-        recyclerView?.adapter = ProductAdapter(products, this, {product: Product -> adapterOnClick(product) })
+        searchBar = findViewById(R.id.fpSearch)
+        searchBar?.setOnQueryTextListener( object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                println("Textchange")
+                search(p0)
+                return true
+            }
+        })
+        recyclerView?.adapter = ProductAdapter(displayProducts, this, {product: Product -> adapterOnClick(product) })
         recyclerView?.layoutManager = LinearLayoutManager(this)
 
         userlabel = findViewById(R.id.fpUsernameText)
@@ -99,7 +136,8 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
                 val title: String = obj["title"].toString()
                 val product = Product(id, price, description, title, imageURLs)
                 products.add(product)
-                recyclerView?.adapter?.notifyDataSetChanged()
+                search(null)
+                //recyclerView?.adapter?.notifyDataSetChanged()
             }
 
         }, {error ->
@@ -108,9 +146,38 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
         queue.add(request)
     }
 
+    fun search(search: String?) {
+        if (search == null) {
+          showAll()
+        } else {
+            displayProducts.clear()
+            products.forEach { it: Product ->
+                val description: String = it.description
+                val title: String = it.title
+                if (description.contains(search!!, true) || title.contains(search!!, true)) {
+                    println(it)
+                    displayProducts.add(it)
+                    println(it.title)
+                }
+            }
+            //recyclerView?.adapter?.notifyDataSetChanged()
+        }
+
+    }
+
+    fun showAll() {
+        displayProducts.clear()
+        products.forEach { product: Product ->
+            displayProducts.add(product)
+        }
+        //recyclerView?.adapter?.notifyDataSetChanged()
+
+    }
+
     override fun onResume() {
         super.onResume()
         loadProducts()
+        search(null)
         if (!User.isLoggedIn()) {
             userlabel?.text = "Login"
             addItemButton?.hide()

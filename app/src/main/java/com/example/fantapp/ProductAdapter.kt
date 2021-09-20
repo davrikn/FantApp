@@ -29,7 +29,7 @@ class ProductAdapter( private val products: MutableList<Product>,
         init {
             view.setOnClickListener {
                 product?.let {
-                    print(product.toString())
+                    println(product.toString())
                     onClick(it)
                 }
             }

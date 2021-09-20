@@ -46,25 +46,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="25dp"
         android:layout_marginEnd="100dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="10dp"
         android:ems="10"
         android:hint="Title"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/aiDescriptionText"
+        app:layout_constraintBottom_toTopOf="@+id/aiImageLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/aiAddButton"
         android:layout_width="125dp"
         android:layout_height="75dp"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="30dp"
         android:text="Add"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -75,7 +73,7 @@
         android:layout_width="125dp"
         android:layout_height="75dp"
         android:layout_marginStart="50dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="30dp"
         android:text="Cancel"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -96,19 +94,18 @@
     <LinearLayout
         android:id="@+id/aiImageLayout"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="200dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="15dp"
         android:minHeight="50dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/aiAddImageButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/aiTitleText"></LinearLayout>
+        app:layout_constraintStart_toStartOf="parent">
 
     </LinearLayout>
+
 
     <Button
         android:id="@+id/aiAddImageButton"

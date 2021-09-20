@@ -50,19 +50,27 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fpRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fpLogout"
-        app:layout_constraintVertical_bias="0.17"
+        app:layout_constraintTop_toBottomOf="@+id/fpSearch"
         tools:itemCount="4"
         tools:listitem="@layout/item_fragment">
 
     </androidx.recyclerview.widget.RecyclerView>
+
+    <SearchView
+        android:id="@+id/fpSearch"
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
