@@ -21,8 +21,15 @@ import com.android.volley.toolbox.Volley
 import com.example.fantapp.R
 import com.example.fantapp.model.User
 import android.graphics.drawable.BitmapDrawable
-
-
+import android.net.Uri
+import androidx.core.content.FileProvider
+import android.os.Environment
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class AddItemActivity: AppCompatActivity() {
@@ -31,6 +38,9 @@ class AddItemActivity: AppCompatActivity() {
     private var imageContainer: LinearLayout? = null
     private var apiURL = "http://10.0.2.2:8080/api/"
     private var addURL = apiURL + "fant/create"
+    val EXTRA_CONVERSATION = "com.example.fantapp.CONVERSATION"
+    val FILEPROVIDER = "com.example.fantapp.fileprovider"
+    var currentPhoto: File? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,6 +104,34 @@ class AddItemActivity: AppCompatActivity() {
             startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
         }
 
+    }
+
+    fun onCameraClick() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (intent.resolveActivity(packageManager) != null) {
+            currentPhoto = createImageFile()
+            if (currentPhoto != null) {
+                val photoURI: Uri = FileProvider.getUriForFile(this, FILEPROVIDER, currentPhoto!!)
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+            }
+        }
+    }
+
+    private fun createImageFile(): File? {
+        var result: File? = null
+
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val imageFileName = "JPEG_" + timeStamp + "_"
+        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        try {
+            result = File.createTempFile(imageFileName, ".jpg", storageDir)
+            println("File is $result")
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return result
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

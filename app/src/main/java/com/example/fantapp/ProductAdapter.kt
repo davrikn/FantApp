@@ -25,7 +25,7 @@ class ProductAdapter( private val products: MutableList<Product>,
         val image: ImageView
         val titleText: TextView
         var product: Product? = null
-
+    
         init {
             view.setOnClickListener {
                 product?.let {

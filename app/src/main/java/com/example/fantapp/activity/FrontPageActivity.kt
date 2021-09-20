@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -24,6 +25,7 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
     private var products: ArrayList<Product> = ArrayList()
     private var recyclerView: RecyclerView? = null
     private var addItemButton: FloatingActionButton? = null
+    private var logoutButton: TextView? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +55,18 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
             val intent = Intent(this, AddItemActivity::class.java)
             startActivity(intent)
         }
+
+        logoutButton = findViewById(R.id.fpLogout)
+        logoutButton?.setOnClickListener {
+            User.logout()
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(getIntent());
+            overridePendingTransition(0, 0);
+        }
+        logoutButton?.text = "Logout"
+        logoutButton?.isVisible = false
+
     }
 
     override fun userUpdate() {
@@ -61,11 +75,12 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
     }
 
     fun loadProducts() {
-        products.clear()
+        products.clear()/*
         products.add(Product(123123,"123", "Long description", "Wow what a product", ArrayList()))
         products.add(Product(1111, "13123", "Cool things", "Selling cool things", ArrayList()))
         products.add(Product(312312,"12323", "Nvidia rtx 3080, ryzen 7 5800h", "Selling pc", ArrayList()))
         products.add(Product(8753455,"3", "Alrite", "Item for sale", ArrayList()))
+        */
         val queue = Volley.newRequestQueue(this)
         val request = JsonArrayRequest(Request.Method.GET, productURL, null, { response ->
             val n = response.length()
@@ -101,6 +116,7 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
         } else {
             userlabel?.text = User.getInstance().getUsername()
             addItemButton?.show()
+            logoutButton?.isVisible = true
         }
     }
 

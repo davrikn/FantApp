@@ -47,14 +47,15 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
         android:layout_marginEnd="100dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="15dp"
         android:ems="10"
         android:hint="Title"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/aiImageLayout"
+        app:layout_constraintBottom_toTopOf="@+id/aiDescriptionText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -97,22 +98,25 @@
         android:layout_height="200dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="15dp"
         android:minHeight="50dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/aiAddImageButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"></LinearLayout>
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/aiAddImageButton"
         android:layout_width="150dp"
         android:layout_height="60dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="25dp"
+        android:layout_marginStart="130dp"
+        android:layout_marginEnd="131dp"
+        android:layout_marginBottom="15dp"
         android:text="Add image"
-        app:layout_constraintBottom_toTopOf="@+id/aiDescriptionText"
+        app:layout_constraintBottom_toTopOf="@+id/aiTitleText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
