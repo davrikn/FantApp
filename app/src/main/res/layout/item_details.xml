@@ -5,21 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <EditText
         android:id="@+id/idDescriptionText"
         android:layout_width="333dp"
         android:layout_height="128dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginEnd="35dp"
+        android:layout_marginStart="39dp"
+        android:layout_marginEnd="39dp"
         android:layout_marginBottom="20dp"
+        android:editable="false"
         android:ems="10"
-        android:focusable="false"
         android:gravity="start|top"
         android:hint="Item description"
-        android:inputType="none"
+        android:inputType="textMultiLine"
         android:isScrollContainer="true"
-        android:scrollIndicators="right"
-        android:scrollbarStyle="insideInset"
+        android:scrollIndicators="end"
         android:scrollbars="vertical"
         android:textAlignment="textStart"
         android:verticalScrollbarPosition="right"
