@@ -2,7 +2,8 @@ package com.example.fantapp.activity
 
 import android.content.Intent
 import android.graphics.Bitmap
-import android.media.Image
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
@@ -11,130 +12,94 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.forEach
-import com.example.fantapp.R
-import com.example.fantapp.model.User
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.isVisible
-import com.example.fantapp.DebugObserver
-import com.example.fantapp.model.Product
-import java.io.BufferedReader
-import java.io.DataOutputStream
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
-import kotlin.random.Random
-import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
-import androidx.core.content.FileProvider
-import android.os.Environment
+import com.example.fantapp.R
 import java.io.File
-import java.io.IOException
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
+import android.os.Environment
+
+import androidx.core.content.FileProvider
+import com.example.fantapp.model.User
+import org.apache.http.HttpEntity
+import org.apache.http.HttpHeaders
+import org.apache.http.HttpResponse
+import org.apache.http.client.HttpClient
+import org.apache.http.client.methods.CloseableHttpResponse
+import org.apache.http.client.methods.HttpPost
+import org.apache.http.entity.ContentType
+import org.apache.http.entity.mime.MultipartEntityBuilder
+import org.apache.http.entity.mime.content.FileBody
+import org.apache.http.entity.mime.content.StringBody
+import org.apache.http.impl.client.CloseableHttpClient
+import org.apache.http.impl.client.DefaultHttpClient
+import java.io.IOException
+import java.lang.Exception
+import java.text.SimpleDateFormat
+import org.apache.http.impl.client.HttpClientBuilder
+import org.apache.http.impl.client.HttpClients
+import org.apache.http.util.EntityUtils
 
 
-class AddItemActivity: AppCompatActivity(), DebugObserver {
+class AddItemActivity: AppCompatActivity() {
     private val REQUEST_IMAGE_CAPTURE = 1
     private var addImageButton: Button? = null
     private var imageContainer: LinearLayout? = null
     private var apiURL = "http://10.0.2.2:8080/api/"
     private var addURL = apiURL + "fant/create"
-    private val boundary: String = "------WebKitFormBoundary6EWVXJwLnzkzGNaD"
-    private val retnew: String = "\r\n"
-    private val dretnew: String = retnew + retnew
-    private val contdis: String = "Content-Disposition: form-data; name=\""
     private var debug: TextView? = null
-    private val debugText: DebugText = DebugText()
     private val selected: ArrayList<View> = ArrayList()
     private var removeSelectedButton: Button? = null
-    val EXTRA_CONVERSATION = "com.example.fantapp.CONVERSATION"
     val FILEPROVIDER = "com.example.fantapp.fileprovider"
     var currentPhoto: File? = null
+    var photos: ArrayList<File> = ArrayList()
 
-    private class DebugText() {
-        private var busy = false;
-        private var text: String = ""
-        private val observers: ArrayList<DebugObserver> = ArrayList()
-        override fun toString(): String {
-            return text;
-        }
 
-        fun updateText(text: String) {
-            while (busy) {}
-            busy = true
-            this.text = text
-            notifyObservers()
-            busy = false
-        }
-
-        private fun notifyObservers() {
-            observers.forEach{
-                it.debugChange()
-            }
-        }
-    }
-
-    private class FuckYou(
-        private val data: String,
-        private val addURL: String,
-        private val debug: DebugText,
-        private val imageContainer: LinearLayout?
-    ): Thread() {
-
-        private fun doRequest(data: String): String {
-            val url = URL(addURL)
-            val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            connection.requestMethod = "POST"
-            connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=----WebKitFormBoundary6EWVXJwLnzkzGNaD")
-            connection.setRequestProperty("Content-Language", "en-US");
-            connection.setRequestProperty("Content-Length", data.encodeToByteArray().size.toString())
-            connection.setRequestProperty("User-Agent","Mozilla/5.0 ( compatible ) ");
-            connection.setRequestProperty("Accept","*/*");
-            connection.setRequestProperty("Authorization", "Bearer " + User.getInstance().getToken())
-            connection.useCaches = false;
-            connection.doInput = true;
-            connection.doOutput = true;
-            val wr = DataOutputStream(connection.outputStream)
-            wr.writeBytes(data)
-            wr.flush()
-            wr.close()
-            if (connection.responseCode == 200) {
-                val instream = connection.inputStream
-                val reader = BufferedReader(InputStreamReader(instream))
-                var line: String? = ""
-                val response = StringBuffer()
-                line = reader.readLine()
-                while ((reader.readLine().also { line = it }) != null) {
-                    response.append("$line\r")
-                }
-                reader.close()
-                return response.toString()
-            }
-
-            println("============================================================================================================================================================================================================================")
-            println(connection.responseCode)
-            println(connection.responseMessage)
-            println(connection.errorStream)
-            return connection.responseCode.toString()
-
-        }
-
+    private class Requester(private val activity: AppCompatActivity, private val title: String,
+                            private val description: String, private val price: String,
+                            private val photos: ArrayList<File>, private val addURL: String): Thread() {
         override fun run() {
-            uploadPics(imageContainer)
-            val response: String = doRequest(data)
-            debug.updateText(response)
+            super.run()
+            val httpClient: CloseableHttpClient = HttpClients.createDefault()
+            val httpPost: HttpPost = HttpPost(addURL)
+            httpPost.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + User.getInstance().getToken())
+
+            val titleBody: StringBody = StringBody(title, ContentType.TEXT_PLAIN)
+            val descriptionBody: StringBody = StringBody(description, ContentType.TEXT_PLAIN)
+            val priceBody: StringBody = StringBody(price, ContentType.TEXT_PLAIN)
+
+            val builder: MultipartEntityBuilder = MultipartEntityBuilder.create()
+
+            builder.addPart("title", titleBody)
+            builder.addPart("description", descriptionBody)
+            builder.addPart("price", priceBody)
+
+            if (photos.size != 0) {
+                photos.forEach {
+                    val bin: FileBody = FileBody(it)
+                    builder.addPart("files", bin)
+                }
+            }
+
+            val httpEntity: HttpEntity = builder.build()
+
+            httpPost.entity = httpEntity
+
+            try {
+                val response: CloseableHttpResponse = httpClient.execute(httpPost)
+                println("========================================================================================================================================================================================================")
+                println(response)
+                val resEntity = response.entity
+
+                if (resEntity != null) {
+                    println("Response content length " + resEntity.contentLength)
+                }
+                EntityUtils.consume(resEntity)
+                activity.finish()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
-
-        private fun uploadPics(imageContainer: LinearLayout?) {
-
-        }
-    }
-
-    override fun debugChange() {
-        debug?.text = debugText.toString()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -154,77 +119,22 @@ class AddItemActivity: AppCompatActivity(), DebugObserver {
         addImageButton = findViewById(R.id.aiAddImageButton)
         addImageButton?.setOnClickListener {
             onCameraClick()
-            debugText.updateText("Clicked addImg")
+            debug?.text = "Clicked addImg";
         }
         removeSelectedButton = findViewById(R.id.aiDeleteSelectedButton)
         removeSelectedButton?.setOnClickListener {
             selected.forEach {
                 imageContainer?.removeView(it)
             }
+            removeSelectedButton?.isVisible = false
         }
-        //removeSelectedButton?.isVisible = false
+        removeSelectedButton?.isVisible = false
         val addButton: Button = findViewById(R.id.aiAddButton)
         addButton.setOnClickListener {
-            var data: String = boundary + retnew + contdis + "title\"" + dretnew + productTitle.text.toString() + retnew +
-                    boundary + retnew + contdis + "description\"" + dretnew + productDescription.text.toString() + retnew +
-                    boundary + retnew + contdis + "price\"" + dretnew + priceText.text.toString() + retnew + boundary
+            val requester: Requester = Requester(this, productTitle.text.toString(), productDescription.text.toString(),
+                priceText.text.toString(), photos, addURL)
+            requester.start()
 
-            /*
-                    boundary + retnew + contdis + "files\";"
-            imageContainer?.forEach {
-                it as ImageView
-                val fname = Random(69420).nextInt().toString()
-                data += "filename=\"" + fname + "\"" + retnew + "Content-Type: image/jpeg" + dretnew + it.drawable.toBitmap().toString() + retnew
-            }
-             */
-            data += "--" + retnew
-            //var data: String = "title:" + productTitle.text + retnew +"description:" + productDescription.text + retnew +"price:" + priceText.text
-
-            val t = FuckYou(data, addURL, debugText, imageContainer)
-            t.start()
-            /*
-            val queue = Volley.newRequestQueue(this)
-            val request: StringRequest = object : StringRequest(
-                Method.POST, addURL,
-                Response.Listener { response ->
-                    // TODO handle response
-                },
-                Response.ErrorListener { error ->
-                    error.printStackTrace()
-                    debug?.text = error.toString()
-                }) {
-
-                override fun getBodyContentType(): String {
-                    return "multipart/form-data"
-                }
-
-                override fun getHeaders(): MutableMap<String, String> {
-                    val headers = HashMap<String, String>()
-                    headers.put("Authorization", "Bearer " + User.getInstance().getToken() )
-                    return headers
-                }
-
-                @Throws(AuthFailureError::class)
-                override fun getParams(): Map<String, String> {
-                    val params: MutableMap<String, String> = HashMap()
-                    params.put("title", productTitle?.text.toString())
-                    params.put("description", productDescription?.text.toString())
-                    params.put("price", priceText.text.toString())
-                    val images = ArrayList<Bitmap>()
-                    print("imgs")
-                    imageContainer?.forEach {
-                        it as ImageView
-                        print(it.drawable.toString())
-                        images.add((it.getDrawable() as BitmapDrawable).bitmap)
-                    }
-
-                    return params
-                }
-            }
-            queue.add(request)
-
-            // TODO post product
-             */
         }
 
     }
@@ -247,35 +157,51 @@ class AddItemActivity: AppCompatActivity(), DebugObserver {
         // Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val imageFileName = "JPEG_" + timeStamp + "_"
-        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         try {
             result = File.createTempFile(imageFileName, ".jpg", storageDir)
+            println("======================================================================================================================================================================================================================================================================================================================================================")
             println("File is $result")
         } catch (e: IOException) {
+            println("======================================================================================================================================================================================================================================================================================================================================================")
             e.printStackTrace()
         }
         return result
     }
 
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as Bitmap
-            val image: ImageView = ImageView(this)
-            image.setOnLongClickListener {
-                if (selected.contains(it)) {
-                    selected.remove(it)
-                } else {
-                    selected.add(it)
-                }
-                removeSelectedButton?.isVisible = selected.size != 0
+            if(currentPhoto != null) {
+                try {
+                    val image: ImageView = ImageView(this)
+                    val options = BitmapFactory.Options()
+                    options.outWidth = 100
+                    options.outHeight = 100
+                    var bitmap: Bitmap = BitmapFactory.decodeFile((currentPhoto!!.absolutePath), options)
+                    bitmap = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
+                    image.setImageBitmap(bitmap)
+                    image.setOnLongClickListener {
+                        if (selected.contains(it)) {
+                            selected.remove(it)
+                        } else {
+                            selected.add(it)
+                        }
+                        removeSelectedButton?.isVisible = selected.size != 0
 
-                false
+                        false
+                    }
+                    //image.maxHeight = 10
+                    //image.maxWidth = 10
+                    imageContainer?.addView(image)
+                    photos.add(currentPhoto!!)
+                    currentPhoto = null
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
             }
-            image.setImageBitmap(imageBitmap)
-            image.maxWidth = 100
-            image.maxHeight = 100
-            imageContainer?.addView(image)
         }
 
     }

@@ -5,7 +5,7 @@ plugins {
 
 android {
 
-    compileSdk 31
+    compileSdk 30
 
     defaultConfig {
         applicationId "com.davidrk.fantapp"
@@ -56,5 +56,6 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime
     implementation "org.apache.httpcomponents:httpmime:4.3.1"
+    api 'com.github.ok2c.hc5.android:httpclient-android:0.1.1'
 
 }

@@ -60,9 +60,9 @@ class ItemDetailActivity(): AppCompatActivity() {
         imageSlider.adapter = FragmentAdapter(this, product.imageURLs)
         val queue = Volley.newRequestQueue(this)
         buyButton.setOnClickListener {
-            println("Buy clicked")
             val buyRequest: StringRequest = object : StringRequest(Method.PUT, buyURL + product.id.toString(), { response ->
                 println(response)
+                finish()
 
             }, { error ->
                 error.printStackTrace()
