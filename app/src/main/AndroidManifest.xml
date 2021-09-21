@@ -4,8 +4,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-feature android:name="android.hardware.camera"
         android:required="true" />
-    <application
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <application
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,6 +14,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FantApp">
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.fantapp.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <activity
             android:name="com.example.fantapp.activity.FrontPageActivity"
             android:exported="true">

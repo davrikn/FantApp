@@ -54,7 +54,6 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //TODO search functionality
         User.observe(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.front_page)
