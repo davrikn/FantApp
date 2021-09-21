@@ -5,13 +5,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/idHeader"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/idUsernameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/purple_500"
+            android:padding="5dp"
+            android:text="Login"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textDirection="rtl"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/idLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/purple_500"
+            android:padding="5dp"
+            android:text="Logout"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textDirection="rtl"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/idUsernameText"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <EditText
         android:id="@+id/idDescriptionText"
         android:layout_width="333dp"
         android:layout_height="128dp"
         android:layout_marginStart="39dp"
         android:layout_marginEnd="39dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:editable="false"
         android:ems="10"
         android:gravity="start|top"
@@ -24,41 +68,42 @@
         android:verticalScrollbarPosition="right"
         app:layout_constraintBottom_toTopOf="@+id/idPriceText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/idPriceText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_marginStart="100dp"
         android:layout_marginEnd="100dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="15dp"
         android:ems="10"
+        android:focusable="false"
         android:hint="Price"
         android:inputType="none"
         android:minHeight="48dp"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/idBuyButton"
+        app:layout_constraintBottom_toTopOf="@+id/idCancelButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:focusable="false"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/idTitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="100dp"
         android:ems="10"
+        android:focusable="false"
         android:hint="Title"
         android:inputType="none"
         android:minHeight="48dp"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:focusable="false"/>
+        app:layout_constraintTop_toBottomOf="@+id/idHeader" />
 
     <Button
         android:id="@+id/idBuyButton"
@@ -70,18 +115,21 @@
         android:text="Buy"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/idCancelButton" />
 
     <Button
         android:id="@+id/idCancelButton"
         android:layout_width="125dp"
         android:layout_height="75dp"
         android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginBottom="40dp"
         android:editable="false"
         android:text="Cancel"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/idBuyButton"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView

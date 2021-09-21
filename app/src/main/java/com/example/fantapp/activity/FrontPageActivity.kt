@@ -84,13 +84,6 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
-        userlabel?.bringToFront()
-
-        addItemButton = findViewById(R.id.fpAddItemButton)
-        addItemButton?.setOnClickListener {
-            val intent = Intent(this, AddItemActivity::class.java)
-            startActivity(intent)
-        }
 
         logoutButton = findViewById(R.id.fpLogout)
         logoutButton?.setOnClickListener {
@@ -100,8 +93,13 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
             startActivity(getIntent());
             overridePendingTransition(0, 0);
         }
-        logoutButton?.text = "Logout"
         logoutButton?.isVisible = false
+
+        addItemButton = findViewById(R.id.fpAddItemButton)
+        addItemButton?.setOnClickListener {
+            val intent = Intent(this, AddItemActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 
@@ -179,6 +177,7 @@ class FrontPageActivity: AppCompatActivity(), UserObserver{
         search(null)
         if (!User.isLoggedIn()) {
             userlabel?.text = "Login"
+            logoutButton?.isVisible = false
             addItemButton?.hide()
         } else {
             userlabel?.text = User.getInstance().getUsername()

@@ -39,6 +39,7 @@ import java.text.SimpleDateFormat
 import org.apache.http.impl.client.HttpClientBuilder
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.util.EntityUtils
+import kotlin.collections.HashMap
 
 
 class AddItemActivity: AppCompatActivity() {
@@ -52,7 +53,8 @@ class AddItemActivity: AppCompatActivity() {
     private var removeSelectedButton: Button? = null
     val FILEPROVIDER = "com.example.fantapp.fileprovider"
     var currentPhoto: File? = null
-    var photos: ArrayList<File> = ArrayList()
+    val photos: ArrayList<File> = ArrayList()
+    val view_photo: HashMap<ImageView, File> = HashMap()
 
 
     private class Requester(private val activity: AppCompatActivity, private val title: String,
@@ -63,7 +65,6 @@ class AddItemActivity: AppCompatActivity() {
             val httpClient: CloseableHttpClient = HttpClients.createDefault()
             val httpPost: HttpPost = HttpPost(addURL)
             httpPost.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + User.getInstance().getToken())
-
             val titleBody: StringBody = StringBody(title, ContentType.TEXT_PLAIN)
             val descriptionBody: StringBody = StringBody(description, ContentType.TEXT_PLAIN)
             val priceBody: StringBody = StringBody(price, ContentType.TEXT_PLAIN)
@@ -110,6 +111,18 @@ class AddItemActivity: AppCompatActivity() {
         cancelButton.setOnClickListener {
             finish()
         }
+        val usernameLabel: TextView = findViewById(R.id.aiUsernameText)
+        usernameLabel.text = User.getInstance().getUsername()
+        val logoutButton: TextView = findViewById(R.id.aiLogout)
+        usernameLabel.setOnClickListener {
+            val intent: Intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        logoutButton.setOnClickListener {
+            User.logout()
+            finish()
+        }
 
         imageContainer = findViewById(R.id.aiImageLayout)
         debug = findViewById(R.id.aiDebug)
@@ -123,8 +136,10 @@ class AddItemActivity: AppCompatActivity() {
         }
         removeSelectedButton = findViewById(R.id.aiDeleteSelectedButton)
         removeSelectedButton?.setOnClickListener {
-            selected.forEach {
+            selected.forEach { it ->
                 imageContainer?.removeView(it)
+                photos.remove(view_photo.get(it))
+                view_photo.remove(it)
             }
             removeSelectedButton?.isVisible = false
         }
@@ -196,6 +211,7 @@ class AddItemActivity: AppCompatActivity() {
                     //image.maxWidth = 10
                     imageContainer?.addView(image)
                     photos.add(currentPhoto!!)
+                    view_photo.put(image, currentPhoto!!)
                     currentPhoto = null
                 } catch (e: Exception) {
                     e.printStackTrace()
